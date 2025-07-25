@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Avization{% endblock %}
+
+{% block content %}
+<h2>Редагувати авізацію</h2>
+<form method="post">
+    <div class="mb-3">
+        <label for="car_number" class="form-label">Номер авто</label>
+        <input type="text" class="form-control" id="car_number" name="car_number" value="{{ avization.car_number }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="driver_name" class="form-label">Водій (ПІБ)</label>
+        <input type="text" class="form-control" id="driver_name" name="driver_name" value="{{ avization.driver_name }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="firm_name" class="form-label">Фірма</label>
+        <input type="text" class="form-control" id="firm_name" name="firm_name" value="{{ avization.firm_name }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="avization_type" class="form-label">Тип</label>
+        <select class="form-select" id="avization_type" name="avization_type">
+            {% for type in avization_types %}
+            <option value="{{ type }}" {% if type == avization.avization_type %}selected{% endif %}>{{ type }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="status" class="form-label">Статус</label>
+        <select class="form-select" id="status" name="status">
+            {% for status in avization_statuses %}
+            <option value="{{ status }}" {% if status == avization.status %}selected{% endif %}>{{ status }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="comment" class="form-label">Коментар</label>
+        <textarea class="form-control" id="comment" name="comment" rows="3">{{ avization.comment }}</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Зберегти</button>
+</form>
+{% endblock %}

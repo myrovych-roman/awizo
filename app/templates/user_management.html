@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}User Management{% endblock %}
+
+{% block content %}
+<h2>Керування користувачами</h2>
+
+<div class="card mb-4">
+    <div class="card-header">
+        Створити нового користувача
+    </div>
+    <div class="card-body">
+        <form action="/users/create" method="post">
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label for="username" class="form-label">Логін</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="password" class="form-label">Пароль</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label for="role" class="form-label">Роль</label>
+                    <select class="form-select" id="role" name="role">
+                        <option value="user">User</option>
+                        <option value="guard">Guard</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label for="firm_name" class="form-label">Фірма</label>
+                    <input type="text" class="form-control" id="firm_name" name="firm_name">
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label for="full_name" class="form-label">ПІБ</label>
+                    <input type="text" class="form-control" id="full_name" name="full_name">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Створити</button>
+        </form>
+    </div>
+</div>
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Логін</th>
+            <th>Роль</th>
+            <th>Фірма</th>
+            <th>ПІБ</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.username }}</td>
+            <td>{{ user.role }}</td>
+            <td>{{ user.firm_name }}</td>
+            <td>{{ user.full_name }}</td>
+            <td>
+                <a href="/users/{{ user.id }}/delete" class="btn btn-sm btn-danger">Видалити</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

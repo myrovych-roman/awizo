@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Create Avization{% endblock %}
+
+{% block content %}
+<h2>Створити авізацію</h2>
+<form method="post">
+    <div class="mb-3">
+        <label for="car_number" class="form-label">Номер авто</label>
+        <input type="text" class="form-control" id="car_number" name="car_number" required>
+    </div>
+    <div class="mb-3">
+        <label for="driver_name" class="form-label">Водій (ПІБ)</label>
+        <input type="text" class="form-control" id="driver_name" name="driver_name" required>
+    </div>
+    <div class="mb-3">
+        <label for="firm_name" class="form-label">Фірма</label>
+        <input type="text" class="form-control" id="firm_name" name="firm_name" required>
+    </div>
+    <div class="mb-3">
+        <label for="avization_type" class="form-label">Тип</label>
+        <select class="form-select" id="avization_type" name="avization_type">
+            {% for type in avization_types %}
+            <option value="{{ type }}">{{ type }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="comment" class="form-label">Коментар</label>
+        <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Створити</button>
+</form>
+{% endblock %}

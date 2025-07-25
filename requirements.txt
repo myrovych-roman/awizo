@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+sqlalchemy
+psycopg2-binary
+passlib
+python-multipart
+jinja2
+bcrypt
+alembic

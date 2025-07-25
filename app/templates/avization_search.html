@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Search Avizations{% endblock %}
+
+{% block content %}
+<h2>Пошук авізацій</h2>
+<form method="post" class="mb-3">
+    <div class="row">
+        <div class="col-md-4">
+            <input type="text" class="form-control" name="search" placeholder="Search...">
+        </div>
+        <div class="col-md-3">
+            <select class="form-select" name="search_by">
+                <option value="car_number">Номер авто</option>
+                <option value="driver_name">ПІБ водія</option>
+                <option value="firm_name">Назва фірми</option>
+                <option value="user_full_name">ПІБ працівника</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary">Пошук</button>
+        </div>
+    </div>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Номер авто</th>
+                <th>Водій</th>
+                <th>Фірма</th>
+                <th>Дата/Час</th>
+                <th>Тип</th>
+                <th>Статус</th>
+                <th>Коментар</th>
+                <th>Створив</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for avization in avizations %}
+            <tr>
+                <td>{{ avization.car_number }}</td>
+                <td>{{ avization.driver_name }}</td>
+                <td>{{ avization.firm_name }}</td>
+                <td>{{ avization.date_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>{{ avization.avization_type }}</td>
+                <td>{{ avization.status }}</td>
+                <td>{{ avization.comment }}</td>
+                <td>{{ avization.user.full_name }}</td>
+                <td>
+                    <a href="/avizations/{{ avization.id }}/edit" class="btn btn-sm btn-warning">Редагувати</a>
+                    <a href="/avizations/{{ avization.id }}/delete" class="btn btn-sm btn-danger">Видалити</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

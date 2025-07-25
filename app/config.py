@@ -1,0 +1,6 @@
+DB_NAME = "learning_db"
+DB_USER = "test_user01"
+DB_PASSWORD = "lososy"
+DB_HOST = "localhost"
+DB_PORT = "5432"
+SECRET_KEY = "a_super_secret_key"
