@@ -10,12 +10,17 @@ from datetime import datetime
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
 
+
 @router.get("/avizations/create", response_class=HTMLResponse)
 def create_avization_form(request: Request):
-    return templates.TemplateResponse("avization_form.html", {"request": request, "avization_types": [e.value for e in AvizationType]})
+    return templates.TemplateResponse("avization_form.html",
+                                      {"request": request, "avization_types": [item.value for item in AvizationType]})
+
 
 @router.post("/avizations/create")
-def create_avization(request: Request, db: Session = Depends(get_db), car_number: str = Form(...), driver_name: str = Form(...), firm_name: str = Form(...), avization_type: str = Form(...), comment: str = Form(None)):
+def create_avization(request: Request, db: Session = Depends(get_db), car_number: str = Form(...),
+                     driver_name: str = Form(...), firm_name: str = Form(...), avization_type: str = Form(...),
+                     comment: str = Form(None)):
     user_id = request.session.get("user_id")
     if not user_id:
         return RedirectResponse(url="/login")
@@ -33,13 +38,16 @@ def create_avization(request: Request, db: Session = Depends(get_db), car_number
     db.commit()
     return RedirectResponse(url="/avizations/search", status_code=303)
 
+
 @router.get("/avizations/search", response_class=HTMLResponse)
 def search_avizations_form(request: Request, db: Session = Depends(get_db)):
     avizations = db.query(Avization).all()
     return templates.TemplateResponse("avization_search.html", {"request": request, "avizations": avizations})
 
+
 @router.post("/avizations/search", response_class=HTMLResponse)
-def search_avizations(request: Request, db: Session = Depends(get_db), search: str = Form(...), search_by: str = Form(...)):
+def search_avizations(request: Request, db: Session = Depends(get_db), search: str = Form(...),
+                      search_by: str = Form(...)):
     query = db.query(Avization)
     if search_by == "car_number":
         query = query.filter(Avization.car_number.contains(search))
@@ -53,6 +61,7 @@ def search_avizations(request: Request, db: Session = Depends(get_db), search: s
     avizations = query.all()
     return templates.TemplateResponse("avization_search.html", {"request": request, "avizations": avizations})
 
+
 @router.get("/avizations/{avization_id}/delete")
 def delete_avization(request: Request, avization_id: int, db: Session = Depends(get_db)):
     user_id = request.session.get("user_id")
@@ -65,13 +74,20 @@ def delete_avization(request: Request, avization_id: int, db: Session = Depends(
         db.commit()
     return RedirectResponse(url="/avizations/search", status_code=303)
 
+
 @router.get("/avizations/{avization_id}/edit", response_class=HTMLResponse)
 def edit_avization_form(request: Request, avization_id: int, db: Session = Depends(get_db)):
     avization = db.query(Avization).filter(Avization.id == avization_id).first()
-    return templates.TemplateResponse("avization_edit.html", {"request": request, "avization": avization, "avization_types": [e.value for e in AvizationType], "avization_statuses": [e.value for e in AvizationStatus]})
+    return templates.TemplateResponse("avization_edit.html", {"request": request, "avization": avization,
+                                                              "avization_types": [item.value for item in AvizationType],
+                                                              "avization_statuses": [item.value for item in
+                                                                                     AvizationStatus]})
+
 
 @router.post("/avizations/{avization_id}/edit")
-def edit_avization(request: Request, avization_id: int, db: Session = Depends(get_db), car_number: str = Form(...), driver_name: str = Form(...), firm_name: str = Form(...), avization_type: str = Form(...), status: str = Form(...), comment: str = Form(None)):
+def edit_avization(request: Request, avization_id: int, db: Session = Depends(get_db), car_number: str = Form(...),
+                   driver_name: str = Form(...), firm_name: str = Form(...), avization_type: str = Form(...),
+                   status: str = Form(...), comment: str = Form(None)):
     avization = db.query(Avization).filter(Avization.id == avization_id).first()
     if avization:
         avization.car_number = car_number
