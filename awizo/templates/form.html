@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}{% if avisation %}Редагувати{% else %}Створити{% endif %} Авізацію{% endblock %}
+
+{% block content %}
+<h1 class="my-4">{% if avisation %}Редагувати{% else %}Створити{% endif %} Авізацію</h1>
+
+<form method="post">
+    <div class="mb-3">
+        <label for="car_number" class="form-label">Номер авто</label>
+        <input type="text" name="car_number" id="car_number" class="form-control" value="{{ avisation.car_number if avisation else '' }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="driver_name" class="form-label">ПІБ водія</label>
+        <input type="text" name="driver_name" id="driver_name" class="form-control" value="{{ avisation.driver_name if avisation else '' }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="company_name" class="form-label">Назва фірми</label>
+        <input type="text" name="company_name" id="company_name" class="form-control" value="{{ avisation.company_name if avisation else '' }}">
+    </div>
+    <div class="mb-3">
+        <label for="entry_time" class="form-label">Дата/час запланованого в’їзду</label>
+        <input type="datetime-local" name="entry_time" id="entry_time" class="form-control" value="{{ avisation.entry_time if avisation else '' }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="exit_time" class="form-label">Дата/час виїзду</label>
+        <input type="datetime-local" name="exit_time" id="exit_time" class="form-control" value="{{ avisation.exit_time if avisation else '' }}">
+    </div>
+    <div class="mb-3">
+        <label for="type" class="form-label">Тип візиту</label>
+        <input type="text" name="type" id="type" class="form-control" value="{{ avisation.type if avisation else '' }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="status" class="form-label">Статус</label>
+        <select name="status" id="status" class="form-select">
+            <option value="створена" {% if avisation and avisation.status == 'створена' %}selected{% endif %}>Створена</option>
+            <option value="активна" {% if avisation and avisation.status == 'активна' %}selected{% endif %}>Активна</option>
+            <option value="використана" {% if avisation and avisation.status == 'використана' %}selected{% endif %}>Використана</option>
+            <option value="прострочена" {% if avisation and avisation.status == 'прострочена' %}selected{% endif %}>Прострочена</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-success">Зберегти</button>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">Скасувати</a>
+</form>
+{% endblock %}
