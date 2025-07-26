@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Список Авізацій{% endblock %}
+
+{% block content %}
+<h1 class="my-4">Список Авізацій</h1>
+<a href="{{ url_for('create') }}" class="btn btn-primary mb-3">Створити нову авізацію</a>
+
+<div class="row mb-3">
+    <div class="col-md-4">
+        <select id="search-field" class="form-select">
+            <option value="car_number">Номер авто</option>
+            <option value="driver_name">ПІБ водія</option>
+            <option value="company_name">Назва фірми</option>
+        </select>
+    </div>
+    <div class="col-md-8">
+        <input type="text" id="search-input" class="form-control" placeholder="Пошук...">
+    </div>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Номер авто</th>
+            <th>ПІБ водія</th>
+            <th>Фірма</th>
+            <th>Час в'їзду</th>
+            <th>Час виїзду</th>
+            <th>Тип</th>
+            <th>Статус</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for avisation in avisations %}
+        <tr>
+            <td>{{ avisation.id }}</td>
+            <td>{{ avisation.car_number }}</td>
+            <td>{{ avisation.driver_name }}</td>
+            <td>{{ avisation.company_name }}</td>
+            <td>{{ avisation.entry_time }}</td>
+            <td>{{ avisation.exit_time }}</td>
+            <td>{{ avisation.type }}</td>
+            <td>
+                <select class="form-select status-select" data-id="{{ avisation.id }}">
+                    <option value="створена" {% if avisation.status == 'створена' %}selected{% endif %}>Створена</option>
+                    <option value="активна" {% if avisation.status == 'активна' %}selected{% endif %}>Активна</option>
+                    <option value="використана" {% if avisation.status == 'використана' %}selected{% endif %}>Використана</option>
+                    <option value="прострочена" {% if avisation.status == 'прострочена' %}selected{% endif %}>Прострочена</option>
+                </select>
+            </td>
+            <td>
+                <a href="{{ url_for('edit', id=avisation.id) }}" class="btn btn-sm btn-warning">Редагувати</a>
+                <form action="{{ url_for('delete', id=avisation.id) }}" method="post" style="display: inline-block;">
+                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Ви впевнені?')">Видалити</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{{ url_for('static', filename='js/search.js') }}"></script>
+<script src="{{ url_for('static', filename='js/status.js') }}"></script>
+{% endblock %}
